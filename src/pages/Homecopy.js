@@ -57,7 +57,7 @@ function Home() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   const generateSlug = (title) => {
     return title
