@@ -61,11 +61,18 @@ function Admin() {
   const quillRef = useRef(null);
 
   useEffect(() => {
+    const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
+    console.log("Admin Email from .env:", adminEmail); // Debugging
+
     onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser && currentUser.email === "radubogdan6466@gmail.com") {
+      console.log("Current User:", currentUser); // Debugging
+
+      if (currentUser && currentUser.email === adminEmail) {
+        console.log("User is admin");
         setUser(currentUser);
         fetchPosts();
       } else {
+        console.log("User is NOT admin");
         setUser(null);
       }
     });
