@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPosts } from "../firebase";
 import "./Homecopy.css";
 import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
-// import Pagination from "../components/GeneratePagination";
+
 function Home() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
@@ -13,15 +13,6 @@ function Home() {
   const { pageNumber } = useParams();
   const currentPage = parseInt(pageNumber) || 1; // Pagină implicită: 1
   const postsPerPage = 15;
-
-  // const handlePageChange = (newPage) => {
-  //   if (newPage === 1) {
-  //     navigate("/"); // Pagina 1 → Navighează la "/"
-  //   } else {
-  //     navigate(`/page/${newPage}`); // Orice altă pagină → Navighează la "/page/{număr}"
-  //   }
-  //   window.scrollTo(0, 0); // Duce pagina în sus
-  // };
 
   const formatDate = (timestamp) => {
     const date = timestamp.toDate();
@@ -36,28 +27,29 @@ function Home() {
     return date.toLocaleString("ro-RO", options); // Formatează data conform opțiunilor și în limba română
   };
 
-  const fetchPosts = async () => {
-    try {
-      const fetchedPosts = await getPosts();
-      const sortedPosts = fetchedPosts.sort(
-        (a, b) => b.createdAt.seconds - a.createdAt.seconds
-      );
-      setPosts(sortedPosts);
-
-      // Logica pentru a obține postările recente și populare (exemplu)
-      const recent = sortedPosts.slice(0, 3); // Primele 3 postări sunt considerate recente
-      const popular = sortedPosts.filter((post) => post.likes > 10); // Postările cu peste 10 like-uri sunt populare (exemplu)
-
-      setRecentPosts(recent);
-      setPopularPosts(popular);
-    } catch (error) {
-      console.error("Eroare la preluarea postărilor:", error);
-    }
-  };
-
+  // Mutăm fetchPosts în interiorul useEffect
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const fetchedPosts = await getPosts();
+        const sortedPosts = fetchedPosts.sort(
+          (a, b) => b.createdAt.seconds - a.createdAt.seconds
+        );
+        setPosts(sortedPosts);
+
+        // Logica pentru a obține postările recente și populare (exemplu)
+        const recent = sortedPosts.slice(0, 3); // Primele 3 postări sunt considerate recente
+        const popular = sortedPosts.filter((post) => post.likes > 10); // Postările cu peste 10 like-uri sunt populare (exemplu)
+
+        setRecentPosts(recent);
+        setPopularPosts(popular);
+      } catch (error) {
+        console.error("Eroare la preluarea postărilor:", error);
+      }
+    };
+
     fetchPosts();
-  }, [fetchPosts]);
+  }, []); // Dependențele sunt acum corect gestionate
 
   const generateSlug = (title) => {
     return title
@@ -69,7 +61,6 @@ function Home() {
   const getPreviewText = (text) => {
     const words = text.split(" ");
     if (words.length > 20) {
-      // Am mărit numărul de cuvinte pentru preview
       return words.slice(0, 20).join(" ") + "...";
     }
     return text;
@@ -78,10 +69,11 @@ function Home() {
   const handleReadMore = (slug) => {
     navigate(`/${slug}`);
   };
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  // const totalPages = Math.ceil(posts.length / postsPerPage);
+
   const removeHtmlTags = (htmlString) => {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
     return doc.body.textContent || "";
@@ -90,7 +82,6 @@ function Home() {
   return (
     <div className="containerHome">
       <div className="blog">
-        {/* <h1>Blog</h1> */}
         <div className="posts-container">
           {currentPosts.map((post) => (
             <div className="blog-post" key={post.id}>
@@ -120,17 +111,11 @@ function Home() {
               <hr />
             </div>
           ))}
-          {/* <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(posts.length / postsPerPage)}
-            onPageChange={handlePageChange}
-          /> */}
         </div>
       </div>
       <div className="right-some-container">
         <div className="recent-posts-container">
-          {recentPosts.length > 0 && <RecentPosts posts={recentPosts} />}{" "}
-          {/* Afișăm RecentPosts doar dacă avem date */}
+          {recentPosts.length > 0 && <RecentPosts posts={recentPosts} />}
         </div>
         <div className="popular-seven-days-container">
           <PopularSevenDays />
