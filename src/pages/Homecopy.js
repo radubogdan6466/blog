@@ -9,19 +9,19 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const [recentPosts, setRecentPosts] = useState([]); // Stare pentru postările recente
-  const [popularPosts, setPopularPosts] = useState([]); // Stare pentru postările populare
+  const [setPopularPosts] = useState([]); // Stare pentru postările populare
   const { pageNumber } = useParams();
   const currentPage = parseInt(pageNumber) || 1; // Pagină implicită: 1
   const postsPerPage = 15;
 
-  const handlePageChange = (newPage) => {
-    if (newPage === 1) {
-      navigate("/"); // Pagina 1 → Navighează la "/"
-    } else {
-      navigate(`/page/${newPage}`); // Orice altă pagină → Navighează la "/page/{număr}"
-    }
-    window.scrollTo(0, 0); // Duce pagina în sus
-  };
+  // const handlePageChange = (newPage) => {
+  //   if (newPage === 1) {
+  //     navigate("/"); // Pagina 1 → Navighează la "/"
+  //   } else {
+  //     navigate(`/page/${newPage}`); // Orice altă pagină → Navighează la "/page/{număr}"
+  //   }
+  //   window.scrollTo(0, 0); // Duce pagina în sus
+  // };
 
   const formatDate = (timestamp) => {
     const date = timestamp.toDate();
@@ -81,7 +81,7 @@ function Home() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  // const totalPages = Math.ceil(posts.length / postsPerPage);
   const removeHtmlTags = (htmlString) => {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
     return doc.body.textContent || "";
