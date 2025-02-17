@@ -7,10 +7,10 @@ import PopularSevenDays from "../components/PopularSevenDays";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-  const navigate = useNavigate();
   const [recentPosts, setRecentPosts] = useState([]); // Stare pentru postările recente
-  const [setPopularPosts] = useState([]); // Stare pentru postările populare
+  const [popularPosts, setPopularPosts] = useState([]); // Stare pentru postările populare
   const { pageNumber } = useParams();
+  const navigate = useNavigate();
   const currentPage = parseInt(pageNumber) || 1; // Pagină implicită: 1
   const postsPerPage = 15;
 
@@ -27,28 +27,29 @@ function Home() {
     return date.toLocaleString("ro-RO", options); // Formatează data conform opțiunilor și în limba română
   };
 
+  const fetchPosts = async () => {
+    try {
+      const fetchedPosts = await getPosts();
+      const sortedPosts = fetchedPosts.sort(
+        (a, b) => b.createdAt.seconds - a.createdAt.seconds
+      );
+      setPosts(sortedPosts);
+
+      // Logica pentru a obține postările recente și populare (exemplu)
+      const recent = sortedPosts.slice(0, 3); // Primele 3 postări sunt considerate recente
+      const popular = sortedPosts.filter((post) => post.likes > 10); // Postările cu peste 10 like-uri sunt populare (exemplu)
+
+      setRecentPosts(recent);
+      setPopularPosts(popular);
+    } catch (error) {
+      console.error("Eroare la preluarea postărilor:", error);
+    }
+  };
+
+  // Folosește useEffect pentru a apela fetchPosts doar o dată, la montare
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const fetchedPosts = await getPosts();
-        const sortedPosts = fetchedPosts.sort(
-          (a, b) => b.createdAt.seconds - a.createdAt.seconds
-        );
-        setPosts(sortedPosts);
-
-        // Logica pentru a obține postările recente și populare
-        const recent = sortedPosts.slice(0, 3);
-        const popular = sortedPosts.filter((post) => post.likes > 10);
-
-        setRecentPosts(recent);
-        setPopularPosts(popular);
-      } catch (error) {
-        console.error("Eroare la preluarea postărilor:", error);
-      }
-    };
-
     fetchPosts();
-  }, []); // Aici nu mai sunt dependențe inutile
+  }, []); // Array gol => se execută o singură dată la montare
 
   const generateSlug = (title) => {
     return title
@@ -60,6 +61,7 @@ function Home() {
   const getPreviewText = (text) => {
     const words = text.split(" ");
     if (words.length > 20) {
+      // Am mărit numărul de cuvinte pentru preview
       return words.slice(0, 20).join(" ") + "...";
     }
     return text;
@@ -117,7 +119,7 @@ function Home() {
           {recentPosts.length > 0 && <RecentPosts posts={recentPosts} />}
         </div>
         <div className="popular-seven-days-container">
-          <PopularSevenDays />
+          <PopularSevenDays posts={popularPosts} />
         </div>
       </div>
     </div>
