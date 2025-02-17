@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPosts } from "../firebase";
 import "./Homecopy.css";
@@ -27,7 +27,6 @@ function Home() {
     return date.toLocaleString("ro-RO", options); // Formatează data conform opțiunilor și în limba română
   };
 
-  // Mutăm fetchPosts în interiorul useEffect
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -37,9 +36,9 @@ function Home() {
         );
         setPosts(sortedPosts);
 
-        // Logica pentru a obține postările recente și populare (exemplu)
-        const recent = sortedPosts.slice(0, 3); // Primele 3 postări sunt considerate recente
-        const popular = sortedPosts.filter((post) => post.likes > 10); // Postările cu peste 10 like-uri sunt populare (exemplu)
+        // Logica pentru a obține postările recente și populare
+        const recent = sortedPosts.slice(0, 3);
+        const popular = sortedPosts.filter((post) => post.likes > 10);
 
         setRecentPosts(recent);
         setPopularPosts(popular);
@@ -49,7 +48,7 @@ function Home() {
     };
 
     fetchPosts();
-  }, []); // Dependențele sunt acum corect gestionate
+  }, []); // Aici nu mai sunt dependențe inutile
 
   const generateSlug = (title) => {
     return title
