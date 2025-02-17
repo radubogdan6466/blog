@@ -1,0 +1,166 @@
+.containerHome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px 0 0;
+}
+
+.blog {
+  font-family: sans-serif;
+  max-width: 960px;
+}
+
+.blog h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.posts-container {
+  margin: 20px 0 20px 20px;
+  background-color: var(--second-background-color);
+  border-radius: 5px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.blog-post {
+}
+
+.blog-post hr {
+  width: 90%;
+  margin: 20px auto;
+  border: none;
+  height: 1px;
+  background-color: #ffc107;
+}
+
+.post-image {
+  height: auto;
+  overflow: hidden;
+  padding: 5%;
+}
+
+.post-image .postHomeImg {
+  height: auto;
+  width: 100%;
+  display: block;
+  border-radius: 5px;
+}
+
+.post-image img:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.5s;
+}
+
+.blog-post .post-title {
+  font-size: 22px;
+  margin-top: 0;
+  margin-left: 5%;
+  max-width: fit-content;
+  color: var(--htwo);
+}
+
+.UnderTitlePostjs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--text-color);
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.UnderTitlePostjs .comments {
+  color: aqua;
+}
+
+.UnderTitlePostjs div {
+  display: flex;
+  align-items: center;
+}
+
+.date {
+  margin: 0;
+  padding: 0;
+  height: 20px;
+  line-height: 20px;
+}
+
+.blog-post .date {
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding-left: 5%;
+  color: var(--text-color);
+}
+
+.blog-post .content {
+  line-height: 1.6;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  color: var(--text-color);
+  font-size: 16px;
+}
+
+.PrevNextPostjs {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-color);
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 5px;
+}
+
+.PostTitlePostjs {
+  font-size: 32px;
+  color: #fafafa;
+  margin-left: 5%;
+}
+
+.autorPostjs .autor {
+  color: #ff6c47;
+}
+
+.right-some-container {
+  width: 30%;
+  background-color: var(--third-background-color);
+  border-radius: 10px;
+  display: none;
+  height: 400vh;
+}
+
+@media (min-width: 965px) {
+  .containerHome {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    width: 70%;
+    max-width: calc(100% - 240px);
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .posts-container {
+    border-radius: 5px 0 5px 5px;
+  }
+
+  .right-some-container {
+    width: 30%;
+    margin: 20px 0 0 0;
+    border-radius: 0 5px 5px 0;
+    display: block;
+  }
+
+  .blog {
+    width: 100%;
+  }
+}

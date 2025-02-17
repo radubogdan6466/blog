@@ -1,0 +1,29 @@
+/* Aplică un fundal pe întreaga pagină */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Asigură-te că pagină ocupă întreaga înălțime a ferestrei */
+  background-color: var(--background-color);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Asigură-te că padding-ul și marginile sunt incluse în lățimea și înălțimea elementelor */
+}
+
+:root {
+  --background-color: #0c0c0c;
+  --second-background-color: #481e14;
+  --third-background-color: #53271c;
+  /* Definește variabila --background-color cu valoarea #0C0C0C */
+  /* Definește variabila --background-color cu valoarea #0C0C0C */
+  --text-color: rgb(223, 223, 223);
+  --htwo: #b2b2b2;
+  /* Variabilă pentru culoarea textului (exemplu) */
+  --accent-color: #ffc107;
+  /* Variabilă pentru o culoare de accent (exemplu) */
+}

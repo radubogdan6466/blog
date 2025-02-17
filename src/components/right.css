@@ -1,0 +1,114 @@
+.link-post {
+  text-decoration: none;
+  color: var(--text-color);
+  /* Culoarea globală definită */
+}
+
+.post-img-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  /* Spațiu între imagine și titlu */
+}
+
+ul li {
+  margin-bottom: 15px;
+  /* Ajustează valoarea după necesitate */
+}
+
+.post-img-container {
+  width: 60px;
+  height: 60px;
+}
+
+.post-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  /* Colțuri rotunjite pentru imagine */
+}
+
+.post-title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.post-title {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-color);
+  /* Culoare neagră pentru titlu */
+}
+
+.post-date {
+  font-size: 14px;
+  color: gray; /* Culoare gri pentru data */
+  margin-top: 5px;
+}
+
+.recent-posts {
+  margin-top: 20px;
+  padding: 5px;
+  color: var(--text-color);
+  /* Culoare din variabila globală */
+}
+
+hr {
+  width: 90%;
+  margin: 5px auto;
+  border: none;
+  height: 1px;
+  background-color: #ffc107;
+  /* Culoare galbenă pentru linie */
+}
+
+/* Stiluri suplimentare pentru clasele tale deja existente */
+.title-popular-seven {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sevendayshastrei {
+  background-color: blueviolet;
+  height: min-content;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.my-link {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.hposttitleright {
+  font-size: 13px;
+  padding: 5%;
+}
+
+.hposttitleright:hover {
+  cursor: pointer;
+}
+
+.posttitleright {
+  font-size: 10px;
+  color: #999999;
+}
+
+.post-image .rightImageBanner {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.postimgtitle {
+  display: flex;
+  align-items: flex-start;
+}
