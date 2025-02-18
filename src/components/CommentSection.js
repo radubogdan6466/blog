@@ -14,6 +14,7 @@ const CommentSection = () => {
             <div className="avatarnamedate">
               <img
                 className="CommentAvatar"
+                alt="User Image"
                 src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
               />
               <div>
