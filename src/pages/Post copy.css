@@ -8,7 +8,7 @@
 
 .blog {
   font-family: sans-serif;
-  /* max-width: 960px; */
+  max-width: 960px;
 }
 
 .blog h1 {
@@ -16,46 +16,34 @@
   margin-bottom: 20px;
 }
 
-.posts-container-postjs {
+.posts-container {
   margin: 20px 0 20px 20px;
   background-color: var(--second-background-color);
   border-radius: 5px;
-  /* min-width: 80%; */
+  min-width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-
 }
 
-/* 
-.posts-container-postjs {
-  margin: 20px 0 20px 20px;
-  background-color: var(--second-background-color);
-  border-radius: 5px;
-  width: fit-content; 
-  max-width: 80%; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  word-break: break-word; 
-  padding: 10px; 
-}
-*/
 .blog-post {
-  max-width: 90%;
+  width: 90%;
 }
 
 .blog-post hr {
-  width: 100%;
+  width: 90%;
   margin: 20px auto;
   border: none;
   height: 1px;
   background-color: #ffc107;
 }
 
+.post-image {
+  height: auto;
+  overflow: hidden;
+  padding: 5%;
+}
 
 .post-image .postHomeImg {
   height: auto;
@@ -84,7 +72,7 @@
   gap: 10px;
   font-size: 11px;
   color: var(--text-color);
-  /* margin-left: 5%; */
+  margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -116,21 +104,17 @@
 .blog-post .content {
   line-height: 1.6;
   width: 100%;
-  /* padding-left: 5%; */
-  /* padding-right: 5%; */
+  padding-left: 5%;
+  padding-right: 5%;
   color: var(--text-color);
   font-size: 16px;
-  word-break: break-word;
-  /* Asigură că textul se rupe când e prea lung */
-  overflow-wrap: break-word;
-  /* Alternativ pentru compatibilitate */
 }
 
 .PrevNextPostjs {
   display: flex;
   justify-content: space-between;
   color: var(--text-color);
-  min-width: 100%;
+  width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   padding-top: 5px;
@@ -139,7 +123,7 @@
 .PostTitlePostjs {
   font-size: 23px;
   color: #fafafa;
-  /* margin-left: 5%; */
+  margin-left: 5%;
 }
 
 .autorPostjs .autor {
@@ -147,43 +131,40 @@
 }
 
 .right-some-container {
-  min-width: 320px;
+  width: 30%;
   background-color: var(--third-background-color);
   border-radius: 10px;
   display: none;
-  height: 200vh;
-  position: relative;
+  height: 400vh;
 }
 
-@media (min-width: 1050px) {
+@media (min-width: 965px) {
   .containerHome {
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
     align-content: center;
-    min-width: 686px;
     width: 70%;
     max-width: calc(100% - 240px);
     margin: 0 auto;
     padding: 0;
   }
 
-  .posts-container-postjs {
+  .posts-container {
     border-radius: 5px 0 5px 5px;
-    width: 686px;
   }
 
   .right-some-container {
-
-    /* width: 30%; */
+    width: 30%;
     margin: 20px 0 0 0;
     border-radius: 0 5px 5px 0;
     display: block;
   }
 
-  .blog {}
+  .blog {
+    width: 100%;
+  }
 }
-
 @media (min-width: 573px) {
   .PostTitlePostjs {
     font-size: 32px;

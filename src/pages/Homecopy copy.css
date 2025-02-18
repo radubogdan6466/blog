@@ -1,18 +1,17 @@
 .containerHome {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   /* Inițial, aliniere pe verticală (pentru ecran mic) */
-  justify-content: space-between;
+  align-items: center;
   /* Aliniere pe orizontală */
   width: 100%;
   /* Ocupă toată lățimea */
-  /* padding: 0 20px 0 0; */
+  padding: 0 20px 0 0;
 }
 
 .blog {
   font-family: sans-serif;
   max-width: 960px;
-
   /* Lățimea maximă a conținutului */
 }
 
@@ -21,7 +20,7 @@
   margin-bottom: 20px;
 }
 
-.posts-container-homejs {
+.posts-container {
   margin: 20px 0 20px 20px;
   background-color: var(--second-background-color);
   border-radius: 5px 5px 5px 5px;
@@ -35,9 +34,7 @@
   /* margin: 0 auto; */
 }
 
-.blog-post {
-  max-width: 90%;
-}
+.blog-post {}
 
 .blog-post hr {
   width: 90%;
@@ -51,16 +48,16 @@
   /* Culoarea liniei */
 }
 
-.post-imageHomejs {
+.post-image {
   /* width: 100%;  */
   height: auto;
   /* Înălțimea se ajustează automat la imagine */
   overflow: hidden;
   /* Ascunde părțile imaginii care depășesc containerul */
-  margin: 5px 0 5px 0;
+  padding: 5%;
 }
 
-.post-imageHomejs .postHomeImg {
+.post-image .postHomeImg {
   /* min-width: 240px; */
   /* Lățimea minimă a imaginii */
   height: auto;
@@ -69,10 +66,10 @@
   /* Lățimea maximă este 100% din container */
   display: block;
   /* Elimină spațiul implicit sub imagine */
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
-.post-imageHomejs img:hover {
+.post-image img:hover {
   cursor: pointer;
   opacity: 0.8;
   transition: 0.5s;
@@ -81,14 +78,14 @@
 .blog-post .post-title {
   font-size: 22px;
   margin-top: 0;
-  /* margin-left: 5%; */
+  margin-left: 5%;
   max-width: fit-content;
   color: var(--htwo);
 }
 
 .blog-post .post-title:hover {
   cursor: pointer;
-  margin-left: 1%;
+  margin-left: 6%;
   transition: 0.5s;
 }
 
@@ -102,6 +99,8 @@
 .blog-post .content {
   line-height: 1.6;
   width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
   color: var(--text-color);
   word-wrap: break-word;
 }
@@ -110,26 +109,27 @@
   /* Stil pentru butonul "Citește mai mult" */
 }
 
-/* .right-some-container {
+.right-some-container {
+  /* Un container pentru RecentPosts */
   width: 30%;
+  /* Ocupă toată lățimea pe ecran mic */
   background-color: var(--third-background-color);
   border-radius: 10px 10px 10px 10px;
   display: flex;
   display: none;
-  height: 200vh;
+  height: 400vh;
 }
 
-*/
 .recent-posts-container {}
 
 /* recent post */
-@media (min-width: 1050px) {
+@media (min-width: 965px) {
   .containerHome {
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
     align-content: center;
-    width: 686px;
+    width: 70%;
     max-width: calc(100% - 240px);
     margin: 0 auto;
     padding: 0;
@@ -139,15 +139,13 @@
     font-size: 26px;
   }
 
-  .posts-container-homejs {
+  .posts-container {
     border-radius: 5px 0 5px 5px;
-    width: 686px;
-
   }
 
   .right-some-container {
     /* Un container pentru RecentPosts */
-    width: 353px;
+    width: 30%;
     /* Ocupă toată lățimea pe ecran mic */
     margin: 20px 0 0 0;
     border-radius: 0 5px 5px 0;
@@ -155,6 +153,6 @@
   }
 
   .blog {
-    /* width: 100%; */
+    width: 100%;
   }
 }

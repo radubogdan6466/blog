@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getPosts } from "../firebase";
 import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
-import useIncrementViews from "../components/useIncrementViews"; // Importă hook-ul
+import { incrementView } from "../firebase";
 
 import "./Post.css";
 
@@ -13,7 +13,16 @@ function Post() {
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState([]); // Stare pentru postările recente
   //views
-  useIncrementViews(post);
+  useEffect(() => {
+    if (post) {
+      const viewedKey = `viewed_${post.id}`;
+
+      if (!sessionStorage.getItem(viewedKey)) {
+        incrementView(post.id);
+        sessionStorage.setItem(viewedKey, "true"); // Marchez postarea ca vizualizată
+      }
+    }
+  }, [post]);
 
   // Dacă data este de tip Timestamp în Firebase
   const formatDate = (timestamp) => {

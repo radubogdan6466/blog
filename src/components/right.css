@@ -42,9 +42,17 @@ ul li {
   /* Culoare neagră pentru titlu */
 }
 
+.post-title:hover {
+
+  color: gray;
+  transition: 0.3s;
+  /* Culoare neagră pentru titlu */
+}
+
 .post-date {
   font-size: 14px;
-  color: gray; /* Culoare gri pentru data */
+  color: gray;
+  /* Culoare gri pentru data */
   margin-top: 5px;
 }
 
@@ -92,13 +100,12 @@ ul {
   padding: 5%;
 }
 
-.hposttitleright:hover {
-  cursor: pointer;
-}
+
 
 .posttitleright {
   font-size: 10px;
   color: #999999;
+
 }
 
 .post-image .rightImageBanner {

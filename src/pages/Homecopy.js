@@ -4,6 +4,7 @@ import { getPosts } from "../firebase";
 import "./Homecopy.css";
 import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
+import Pagination from "../components/Pagination";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -12,7 +13,7 @@ function Home() {
   const { pageNumber } = useParams();
   const navigate = useNavigate();
   const currentPage = parseInt(pageNumber) || 1; // Pagină implicită: 1
-  const postsPerPage = 15;
+  const postsPerPage = 3;
 
   const formatDate = (timestamp) => {
     const date = timestamp.toDate();
@@ -79,14 +80,21 @@ function Home() {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
     return doc.body.textContent || "";
   };
-
+  const handlePageChange = (newPage) => {
+    if (newPage === 1) {
+      navigate("/"); // Pagina 1 → Navighează la "/"
+    } else {
+      navigate(`/page/${newPage}`); // Orice altă pagină → Navighează la "/page/{număr}"
+    }
+    window.scrollTo(0, 0); // Duce pagina în sus
+  };
   return (
     <div className="containerHome">
       <div className="blog">
-        <div className="posts-container">
+        <div className="posts-container-homejs">
           {currentPosts.map((post) => (
             <div className="blog-post" key={post.id}>
-              <div className="post-image">
+              <div className="post-imageHomejs">
                 <img
                   className="postHomeImg"
                   src="https://zoso.ro/img/2025/02/artificial-intelligence-2-720x300.jpg"
@@ -112,6 +120,11 @@ function Home() {
               <hr />
             </div>
           ))}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(posts.length / postsPerPage)}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
       <div className="right-some-container">
