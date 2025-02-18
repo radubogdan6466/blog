@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getPosts } from "../firebase";
 import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
-import UseIncrementViews from "../components/UseIncrementViews"; // Importă hook-ul
+import UseIncrementViews from "../components/useIncrementViews"; // Importă hook-ul
 import PostNavigation from "../components/PostNavigation"; // Importă componenta de navigare
 
 import "./Post.css";
