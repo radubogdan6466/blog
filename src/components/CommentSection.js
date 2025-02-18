@@ -14,7 +14,7 @@ const CommentSection = () => {
             <div className="avatarnamedate">
               <img
                 className="CommentAvatar"
-                alt="AvatarImage"
+                alt="Avatar Image Profile"
                 src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
               />
               <div>
@@ -46,7 +46,7 @@ const CommentSection = () => {
             <div className="divLikeDislikeComment">
               <img
                 className="likebtn"
-                alt="likeButton"
+                alt="Like button icon"
                 src="https://img.freepik.com/free-vector/follow-social-media-icon-isolated_24640-134160.jpg"
               />
               <p className="likenumber">9</p>
@@ -54,7 +54,7 @@ const CommentSection = () => {
             <div className="divLikeDislikeComment">
               <img
                 className="likebtn"
-                alt="likeButton"
+                alt="Dislike button icon"
                 src="https://img.freepik.com/free-vector/follow-social-media-icon-isolated_24640-134160.jpg"
               />
               <p className="dislikenumber">9</p>
