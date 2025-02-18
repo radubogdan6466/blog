@@ -41,7 +41,7 @@ function RecentPosts() {
       <div className="title-popular-seven">
         <h2>Recent post</h2>
       </div>
-      <hr />
+      <hr className="hrrightjs" />
       <ul>
         {recentPosts.map((post) => (
           <li key={post.id}>

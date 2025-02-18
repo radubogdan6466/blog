@@ -25,5 +25,7 @@ body {
   --htwo: #b2b2b2;
   /* Variabilă pentru culoarea textului (exemplu) */
   --accent-color: #ffc107;
+  --title-h-color: #ff6c47;
+  --small-p-text: #999;
   /* Variabilă pentru o culoare de accent (exemplu) */
 }

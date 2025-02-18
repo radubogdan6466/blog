@@ -6,7 +6,7 @@ import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
 import UseIncrementViews from "../components/useIncrementViews"; // Importă hook-ul
 import PostNavigation from "../components/PostNavigation"; // Importă componenta de navigare
-
+import CommentSection from "../components/CommentSection";
 import "./Post.css";
 
 function Post() {
@@ -86,7 +86,7 @@ function Post() {
           <PostNavigation currentSlug={slug} />
 
           <div className="blog-post">
-            <hr />
+            <hr className="hrpostjs" />
             <div>
               <div className="divPostTitlePostjs">
                 <h2 className="PostTitlePostjs">{post.title}</h2>
@@ -109,6 +109,8 @@ function Post() {
               }}
             />
           </div>
+          <hr className="hrabovecommentsection" />
+          <CommentSection />
         </div>
       </div>
       <div className="right-some-container">

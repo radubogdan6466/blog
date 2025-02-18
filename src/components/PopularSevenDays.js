@@ -46,7 +46,7 @@ function PopularSevenDays() {
         <h2>Top articole</h2>
         <h3 className="sevendayshastrei">7 zile</h3>
       </div>
-      <hr />
+      <hr className="hrrightjs" />
       <ul>
         {popularPosts.map((post) => (
           <li key={post.id}>

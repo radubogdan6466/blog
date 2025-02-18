@@ -101,13 +101,17 @@ function Home() {
                   onClick={() => handleReadMore(generateSlug(post.title))}
                 />
               </div>
+
+              <div className="dateviewshomejs">
+                <p className="datee">{formatDate(post.createdAt)}</p>
+                <p className="viewss"> 👁 {post.views} </p>
+              </div>
               <h2
                 className="post-title"
                 onClick={() => handleReadMore(generateSlug(post.title))}
               >
                 {post.title}
               </h2>
-              <p className="date">{formatDate(post.createdAt)}</p>
               <div className="content">
                 <p>{getPreviewText(removeHtmlTags(post.content))}</p>
                 <button

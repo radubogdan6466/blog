@@ -1,0 +1,91 @@
+.hrundercommentsection {
+    width: 100%;
+    margin: 20px auto;
+    border: none;
+    height: 1px;
+    opacity: 0.5;
+    background-color: var(--text-color);
+}
+
+.divabovecommentsections {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.commentNumber {
+    font-weight: bold;
+    color: var(--small-p-text);
+}
+
+.sharebtncommentpage {
+    background-color: blue;
+}
+
+.CommentSectionMain {
+    width: 90%;
+}
+
+.CommentAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.avatarnamedate {
+    display: flex;
+}
+
+.CommentName {
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.CommentPostDate {
+    color: var(--small-p-text);
+    font-size: 11px;
+}
+
+.commentNumber {
+    color: var(--small-p-text);
+
+}
+
+.CommentComponent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.WhatUserCommented-comment {
+    color: var(--text-color);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+
+}
+
+.likebtn {
+    height: 20px;
+    width: 20px;
+    margin: 2px;
+}
+
+.ActionCommentSection {
+    display: flex;
+    justify-content: space-between;
+}
+
+.LikeDislikeComment {
+    display: flex;
+}
+
+.divLikeDislikeComment {
+    display: flex;
+}
+
+.likenumber {
+    color: green
+}
+
+.dislikenumber {
+    color: red;
+}
