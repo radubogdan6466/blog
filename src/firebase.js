@@ -8,6 +8,8 @@ import {
   deleteDoc,
   doc,
   increment,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import {
@@ -169,7 +171,9 @@ const updatePost = async (id, newTitle, newContent, image) => {
 // Funcție pentru a obține toate postările
 const getPosts = async () => {
   const postsCol = collection(db, "posts");
-  const postsSnapshot = await getDocs(postsCol);
+  // Creăm o interogare care sortează postările după data de creare, în ordine descrescătoare (cele mai recente postări la început)
+  const postsQuery = query(postsCol, orderBy("createdAt", "desc"));
+  const postsSnapshot = await getDocs(postsQuery);
   const postsList = postsSnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),

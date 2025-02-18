@@ -5,7 +5,6 @@ import "./Homecopy.css";
 import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
 import Pagination from "../components/Pagination";
-
 function Home() {
   const [posts, setPosts] = useState([]);
   const [recentPosts, setRecentPosts] = useState([]); // Stare pentru postările recente

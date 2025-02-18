@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import { getPosts } from "../firebase";
 import RecentPosts from "../components/RecentPosts";
 import PopularSevenDays from "../components/PopularSevenDays";
-import useIncrementViews from "../components/useIncrementViews"; // Importă hook-ul
+import UseIncrementViews from "../components/UseIncrementViews"; // Importă hook-ul
+import PostNavigation from "../components/PostNavigation"; // Importă componenta de navigare
 
 import "./Post.css";
 
@@ -13,7 +14,7 @@ function Post() {
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState([]); // Stare pentru postările recente
   //views
-  useIncrementViews(post);
+  UseIncrementViews(post);
 
   // Dacă data este de tip Timestamp în Firebase
   const formatDate = (timestamp) => {
@@ -78,10 +79,12 @@ function Post() {
     <div className="containerHome">
       <div className="blog">
         <div className="posts-container-postjs">
-          <div className="PrevNextPostjs">
+          {/* <div className="PrevNextPostjs">
             <p>Previous</p>
             <p>Next</p>
-          </div>
+          </div> */}
+          <PostNavigation currentSlug={slug} />
+
           <div className="blog-post">
             <hr />
             <div>

@@ -58,12 +58,11 @@ function Admin() {
   const [editTitle, setEditTitle] = useState("");
   // Vom folosi această stare pentru a reține link-ul imaginii
   const [imageUrl, setImageUrl] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
   const quillRef = useRef(null);
 
   useEffect(() => {
     const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
-    console.log("Admin Email from .env:", adminEmail); // Debugging
-
     onAuthStateChanged(auth, (currentUser) => {
       console.log("Current User:", currentUser); // Debugging
 
@@ -85,8 +84,8 @@ function Admin() {
 
   const handleAddPost = async (e) => {
     e.preventDefault();
-    // Folosim direct link-ul introdus, fără a încărca fișierul
-    await addPost(title, editorHtml, imageUrl);
+    const timestamp = new Date().toISOString(); // Creați un timestamp pentru fiecare postare
+    await addPost(title, editorHtml, imageUrl, timestamp); // Adăugați timestamp-ul la adăugarea postării
     setTitle("");
     setEditorHtml("");
     setImageUrl("");
@@ -106,6 +105,7 @@ function Admin() {
     setEditTitle("");
     setEditorHtml("");
     setImageUrl("");
+    setIsEditMode(false); // Ieși din modul de editare
     fetchPosts();
   };
 
@@ -123,37 +123,42 @@ function Admin() {
               Deconectare
             </button>
           </div>
-          <form className="admin-form" onSubmit={handleAddPost}>
-            <input
-              type="text"
-              placeholder="Titlu"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+          {!isEditMode && (
+            <form className="admin-form" onSubmit={handleAddPost}>
+              <input
+                type="text"
+                placeholder="Titlu"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
 
-            <input
-              type="text"
-              placeholder="Linkul imaginii"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-            />
-            {imageUrl && (
-              <img src={imageUrl} alt="Preview" style={{ maxWidth: "200px" }} />
-            )}
+              <input
+                type="text"
+                placeholder="Linkul imaginii"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+              />
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  style={{ maxWidth: "200px" }}
+                />
+              )}
 
-            <ReactQuill
-              ref={quillRef}
-              className="admin-editor"
-              value={editorHtml}
-              onChange={setEditorHtml}
-              modules={modules}
-              formats={formats}
-            />
-            <button className="admin-submit-button" type="submit">
-              Adaugă postare
-            </button>
-          </form>
-
+              <ReactQuill
+                ref={quillRef}
+                className="admin-editor"
+                value={editorHtml}
+                onChange={setEditorHtml}
+                modules={modules}
+                formats={formats}
+              />
+              <button className="admin-submit-button" type="submit">
+                Adaugă postare
+              </button>
+            </form>
+          )}
           <ul className="admin-posts-list">
             {posts &&
               posts.map((post) => (
@@ -216,6 +221,7 @@ function Admin() {
                             setEditTitle(post.title);
                             setEditorHtml(post.content);
                             setImageUrl(post.imageUrl);
+                            setIsEditMode(true); // Setează edit mode activ
                           }}
                         >
                           Modifică

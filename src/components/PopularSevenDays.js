@@ -5,16 +5,21 @@ import "./right.css";
 import { Timestamp } from "firebase/firestore";
 
 function PopularSevenDays() {
-  const [recentPosts, setRecentPosts] = useState([]);
+  const [popularPosts, setPopularPosts] = useState([]); // Vom salva postările populare
 
-  // Funcția care actualizează lista celor mai recente postări
-  const fetchRecentPosts = async () => {
+  // Funcția care actualizează lista celor mai populare postări
+  const fetchPopularPosts = async () => {
     const fetchedPosts = await getPosts(); // Obține postările din Firebase
-    setRecentPosts(fetchedPosts.slice(0, 5)); // Alege primele 5 postări
+
+    // Sortăm postările în funcție de numărul de vizualizări (views), descrescător
+    const sortedPosts = fetchedPosts.sort((a, b) => b.views - a.views);
+
+    // Alege primele 5 postări cele mai vizualizate
+    setPopularPosts(sortedPosts.slice(0, 5));
   };
 
   useEffect(() => {
-    fetchRecentPosts(); // Inițial, obține postările când se încarcă componenta
+    fetchPopularPosts(); // Inițial, obține postările populare când se încarcă componenta
   }, []);
 
   const generateSlug = (title) => {
@@ -43,7 +48,7 @@ function PopularSevenDays() {
       </div>
       <hr />
       <ul>
-        {recentPosts.map((post) => (
+        {popularPosts.map((post) => (
           <li key={post.id}>
             <div className="post-img-title">
               <Link
