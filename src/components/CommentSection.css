@@ -64,15 +64,33 @@
 }
 
 .likebtn {
-    height: 20px;
-    width: 20px;
-    margin: 2px;
+    color: green;
+    font-size: 24px;
+    cursor: pointer;
+    padding-right: 5px
+}
+
+.likebtn:hover {
+    color: rgb(16, 164, 16);
+}
+
+.dislikebtn {
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+    padding-right: 5px
+}
+
+.dislikebtn:hover {
+    color: rgb(197, 35, 35);
 }
 
 .ActionCommentSection {
     display: flex;
     justify-content: space-between;
 }
+
+
 
 .LikeDislikeComment {
     display: flex;
@@ -83,9 +101,127 @@
 }
 
 .likenumber {
-    color: green
+    color: green;
+    padding-right: 10px
 }
 
 .dislikenumber {
+    color: red;
+}
+
+
+
+/* REPLY COMMENT CONTENT */
+.replyarrowupdiv {
+    margin-left: 30px;
+    width: 100% - 30px;
+
+}
+
+.replycon {
+    padding-right: 3px;
+}
+
+.replycommentbtn {
+    background: none;
+    color: var(--small-p-text);
+    border: none;
+    cursor: pointer;
+}
+
+.upreply {
+    color: var(--small-p-text);
+}
+
+.replyCommentComponent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 15px;
+    background-color: var(--replybackground);
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.replycommentupdata {
+    display: flex;
+    justify-content: space-between;
+}
+
+.replyavatarnamedate {
+    display: flex;
+}
+
+.replyCommentAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.replyCommentName {
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.replyCommentPostDate {
+    color: var(--small-p-text);
+    font-size: 11px;
+}
+
+.replydivCommentNumber {}
+
+.replycommentNumber {
+    font-weight: bold;
+    color: var(--small-p-text);
+}
+
+.replycommentdiv {}
+
+.replyWhatUserCommented {}
+
+.replyWhatUserCommented-comment {
+    color: var(--text-color);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+
+}
+
+.replyLikeDislikeComment {
+    display: flex;
+    justify-content: end;
+}
+
+.replydivLikeDislikeComment {
+    display: flex;
+}
+
+.replylikebtn {
+    color: green;
+    font-size: 24px;
+    cursor: pointer;
+    padding-right: 5px
+}
+
+.replylikebtn:hover {
+    color: rgb(16, 164, 16);
+}
+
+.replylikenumber {
+    color: green;
+    padding-right: 10px
+}
+
+.replydislikebtn {
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+    padding-right: 5px
+}
+
+.replydislikebtn:hover {
+    color: rgb(197, 35, 35);
+}
+
+.replydislikenumber {
     color: red;
 }

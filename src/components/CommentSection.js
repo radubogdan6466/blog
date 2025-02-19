@@ -1,11 +1,12 @@
 import React from "react";
 import "./CommentSection.css";
+import FormComment from "../components/FormComment";
 const CommentSection = () => {
   return (
     <div className="CommentSectionMain">
       <div className="divabovecommentsections">
         <p className="commentNumber">30 COMENTARII</p>
-        <button className="sharebtncommentpage">SHARE</button>
+        <button className="sharebtncommentpage">somethingbtn</button>
       </div>
       <hr className="hrundercommentsection" />
       <div>
@@ -18,9 +19,9 @@ const CommentSection = () => {
                 src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
               />
               <div>
-                <p className="CommentName">Marian</p>
+                <p className="CommentName">Allen</p>
                 <p className="CommentPostDate">
-                  marți, 18 februarie 2025, 15:0
+                  marți, 18 februarie 2025, 15:00
                 </p>
               </div>
             </div>
@@ -40,28 +41,70 @@ const CommentSection = () => {
         </div>
         <div className="ActionCommentSection">
           <div className="ReplyDiv">
-            <button className="replycommentbtn">Reply</button>
+            <button className="replycommentbtn">
+              <i className="fa-solid fa-reply replycon"></i>reply
+            </button>
           </div>
           <div className="LikeDislikeComment">
             <div className="divLikeDislikeComment">
-              <img
-                className="likebtn"
-                alt="Like button icon"
-                src="https://img.freepik.com/free-vector/follow-social-media-icon-isolated_24640-134160.jpg"
-              />
-              <p className="likenumber">9</p>
+              <i className="fa-solid fa-thumbs-up likebtn"></i>
+              <p className="likenumber">0</p>
             </div>
             <div className="divLikeDislikeComment">
-              <img
-                className="likebtn"
-                alt="Dislike button icon"
-                src="https://img.freepik.com/free-vector/follow-social-media-icon-isolated_24640-134160.jpg"
-              />
-              <p className="dislikenumber">9</p>
+              <i className="fa-solid fa-thumbs-down dislikebtn"></i>
+
+              <p className="dislikenumber">0</p>
+            </div>
+          </div>
+        </div>
+        <div className="replycommentdiv">
+          <div className="replyarrowupdiv">
+            <i class="fa-solid fa-caret-up upreply"></i>
+          </div>
+          <div className="replyCommentComponent">
+            <div className="replycommentupdata">
+              <div className="replyavatarnamedate">
+                <img
+                  className="replyCommentAvatar"
+                  alt="User Image"
+                  src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
+                />
+                <div>
+                  <p className="replyCommentName">Rashid</p>
+                  <p className="replyCommentPostDate">
+                    marți, 18 februarie 2025, 15:23
+                  </p>
+                </div>
+              </div>
+
+              <div className="replydivCommentNumber">
+                <p className="replycommentNumber">#2</p>
+              </div>
+            </div>
+            <div className="replycommentdowndata">
+              <div className="replyWhatUserCommented">
+                <p className="replyWhatUserCommented-comment">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s.
+                </p>
+              </div>
+            </div>
+            <div className="replyLikeDislikeComment">
+              <div className="replydivLikeDislikeComment">
+                <i className="fa-solid fa-thumbs-up replylikebtn"></i>
+                <p className="replylikenumber">0</p>
+              </div>
+              <div className="replydivLikeDislikeComment">
+                <i className="fa-solid fa-thumbs-down replydislikebtn"></i>
+
+                <p className="replydislikenumber">0</p>
+              </div>
             </div>
           </div>
         </div>
         <hr className="hrundercommentsection" />
+        <FormComment />
       </div>
     </div>
   );
