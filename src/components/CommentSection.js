@@ -15,7 +15,7 @@ const CommentSection = () => {
             <div className="avatarnamedate">
               <img
                 className="CommentAvatar"
-                alt="User Image"
+                alt="User Image Comment"
                 src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
               />
               <div>
@@ -66,7 +66,7 @@ const CommentSection = () => {
               <div className="replyavatarnamedate">
                 <img
                   className="replyCommentAvatar"
-                  alt="User Image"
+                  alt="User Image Reply"
                   src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
                 />
                 <div>
