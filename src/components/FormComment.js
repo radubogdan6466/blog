@@ -1,13 +1,18 @@
 import React from "react";
 import "./FormComment.css";
 
-const FormComment = () => {
+const FormComment = ({ onCancel, isReply }) => {
   return (
     <div className="main-form-comment">
       <p className="form-info">
         Câmpurile marcate cu * sunt obligatorii! Adresa de email nu va fi
         publicata.
       </p>
+      {isReply && (
+        <button className="cancel-reply-btn" onClick={onCancel}>
+          Anulează
+        </button>
+      )}
       <form className="comment-form">
         <div className="form-group">
           <label className="form-label" htmlFor="name">

@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./CommentSection.css";
 import FormComment from "../components/FormComment";
 const CommentSection = () => {
+  const [replyVisible, setReplyVisible] = useState(null);
+  const [mainFormVisible, setMainFormVisible] = useState(true);
+  const handleReplyClick = (commentId) => {
+    setReplyVisible(replyVisible === commentId ? null : commentId);
+    setMainFormVisible(replyVisible === commentId);
+  };
+  const handleCancelReply = () => {
+    setReplyVisible(null);
+    setMainFormVisible(true);
+  };
   return (
     <div className="CommentSectionMain">
       <div className="divabovecommentsections">
@@ -41,7 +51,10 @@ const CommentSection = () => {
         </div>
         <div className="ActionCommentSection">
           <div className="ReplyDiv">
-            <button className="replycommentbtn">
+            <button
+              className="replycommentbtn"
+              onClick={() => handleReplyClick(1)}
+            >
               <i className="fa-solid fa-reply replycon"></i>reply
             </button>
           </div>
@@ -57,6 +70,12 @@ const CommentSection = () => {
             </div>
           </div>
         </div>
+        {/* Formularul de răspuns apare doar sub comentariul corespunzător */}
+        {replyVisible === 1 && (
+          <div className="reply-form">
+            <FormComment onCancel={handleCancelReply} isReply={true} />
+          </div>
+        )}
         <div className="replycommentdiv">
           <div className="replyarrowupdiv">
             <i class="fa-solid fa-caret-up upreply"></i>
@@ -104,7 +123,8 @@ const CommentSection = () => {
           </div>
         </div>
         <hr className="hrundercommentsection" />
-        <FormComment />
+        {/* Formularul principal este ascuns când se deschide un reply */}
+        {mainFormVisible && <FormComment />}{" "}
       </div>
     </div>
   );
