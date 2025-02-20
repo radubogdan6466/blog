@@ -44,6 +44,7 @@ function Post() {
       const foundPost = posts.find((p) => generateSlug(p.title) === slug); // Căutăm postarea care se potrivește cu slug-ul
 
       if (foundPost) {
+        console.log("ID-ul postării găsite:", foundPost.id); // Afișează ID-ul postării
         setPost(foundPost); // Dacă găsim postarea, o setăm în starea componentului
       } else {
         setPost(null); // Dacă nu găsim, setăm post null
@@ -110,7 +111,7 @@ function Post() {
             />
           </div>
           <hr className="hrabovecommentsection" />
-          <CommentSection />
+          <CommentSection postId={post.id} />
         </div>
       </div>
       <div className="right-some-container">

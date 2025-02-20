@@ -61,10 +61,7 @@ const CommentSection = ({ postId }) => {
       [name]: value,
     }));
   };
-  const handleReplyClick = (commentId) => {
-    setReplyingTo(commentId); // Setează comentariul la care se răspunde
-    setMainFormVisible(false); // Ascunde formularul principal
-  };
+
   const handleCancelReply = () => {
     setReplyVisible(null);
     setMainFormVisible(true);
@@ -140,7 +137,15 @@ const CommentSection = ({ postId }) => {
               <div className="ReplyDiv">
                 <button
                   className="replycommentbtn"
-                  onClick={() => handleReplyClick(comment.id)}
+                  onClick={() => {
+                    console.log(
+                      "replyingTo:",
+                      replyingTo,
+                      "comment.id:",
+                      comment.id
+                    );
+                    setReplyingTo(comment.id);
+                  }}
                 >
                   <i className="fa-solid fa-reply replycon"></i>reply
                 </button>

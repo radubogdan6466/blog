@@ -51,6 +51,7 @@ const formats = [
 
 function Admin() {
   const [user, setUser] = useState(null);
+  const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [editorHtml, setEditorHtml] = useState("");
   const [posts, setPosts] = useState([]);
@@ -79,16 +80,23 @@ function Admin() {
 
   const fetchPosts = async () => {
     const data = await getPosts();
+    console.log("Postări primite:", data); // 🔍 Verifică postările și ID-urile
+    console.log("Id postare 1:", data[0]?.id);
+
     setPosts(data);
   };
 
   const handleAddPost = async (e) => {
     e.preventDefault();
-    const timestamp = new Date().toISOString(); // Creați un timestamp pentru fiecare postare
-    await addPost(title, editorHtml, imageUrl, timestamp); // Adăugați timestamp-ul la adăugarea postării
+
+    const timestamp = new Date().toISOString(); // Timestamp pentru postare
+
+    await addPost(title, editorHtml, category, timestamp); // Adăugăm categoria
+
     setTitle("");
     setEditorHtml("");
-    setImageUrl("");
+    setCategory(""); // Resetăm categoria
+
     fetchPosts();
   };
 
@@ -198,7 +206,9 @@ function Admin() {
                     </form>
                   ) : (
                     <>
-                      <h3>{post.title}</h3>
+                      <h3>
+                        {post.title} (ID: {post.id})
+                      </h3>
                       <div dangerouslySetInnerHTML={{ __html: post.content }} />
                       {post.imageUrl && (
                         <img

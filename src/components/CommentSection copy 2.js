@@ -4,15 +4,15 @@ import FormComment from "../components/FormComment";
 import { addComment, getComments, addReply } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 
-const CommentSection = ({ postId }) => {
+const CommentSection = ({ comment, postId }) => {
   const [replyVisible, setReplyVisible] = useState(null);
   const [mainFormVisible, setMainFormVisible] = useState(true);
+  const [replyData, setReplyData] = useState(true);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     name: "",
     comment: "",
   });
-  const [newReply, setNewReply] = useState({ name: "", comment: "" });
   const [replyingTo, setReplyingTo] = useState(null);
 
   useEffect(() => {}, [postId]);
@@ -61,49 +61,69 @@ const CommentSection = ({ postId }) => {
       [name]: value,
     }));
   };
+
   const handleReplyClick = (commentId) => {
-    setReplyingTo(commentId); // Setează comentariul la care se răspunde
-    setMainFormVisible(false); // Ascunde formularul principal
+    setReplyVisible(replyVisible === commentId ? null : commentId);
+    setMainFormVisible(replyVisible === commentId);
+
+    // Inițializează un obiect pentru reply
+    if (replyVisible === commentId) {
+      setReplyData({ ...replyData, comment: "" }); // Resetează doar comentariul din reply
+    }
   };
+
   const handleCancelReply = () => {
     setReplyVisible(null);
     setMainFormVisible(true);
   };
-  const handleReplySubmit = async (e, commentId) => {
+
+  // Funcție de actualizare pentru reply
+  const handleReplyInputChange = (e) => {
+    const { name, value } = e.target;
+    setReplyData({
+      ...replyData,
+      [name]: value,
+    });
+  };
+
+  const handleReplySubmit = async (e) => {
     e.preventDefault();
 
-    if (!newReply.name || !newReply.comment) {
+    if (!replyData.comment.trim() || !replyData.name) {
+      console.error("Comentariul sau numele lipsește!");
       return;
     }
 
-    const replyData = {
-      id: uuidv4(),
-      name: newReply.name,
-      comment: newReply.comment,
+    const reply = {
+      id: new Date().getTime(), // Poți folosi și uuid pentru un ID unic
+      name: replyData.name,
+      comment: replyData.comment,
       date: new Date().toLocaleString(),
     };
 
     try {
-      await addReply(postId, commentId, replyData);
-
-      // Actualizăm local comentariile
-      setComments(
-        comments.map((comment) =>
-          comment.id === commentId
-            ? { ...comment, replies: [...comment.replies, replyData] }
-            : comment
-        )
-      );
-
-      setNewReply({ name: "", comment: "" });
-      setReplyingTo(null);
+      // Asigură-te că 'comment' este definit corect și îl folosești
+      if (comment && comment.id) {
+        await addReply(postId, comment.id, reply); // Folosește comment.id
+        setComments((prevComments) =>
+          prevComments.map((existingComment) =>
+            existingComment.id === comment.id
+              ? {
+                  ...existingComment,
+                  replies: [...existingComment.replies, reply],
+                }
+              : existingComment
+          )
+        );
+        setReplyData({ ...replyData, comment: "" }); // Resetează doar câmpul de răspuns
+      } else {
+        console.error("Comentariul la care se răspunde nu este definit");
+      }
     } catch (error) {
       console.error("Eroare la adăugarea răspunsului:", error);
     }
   };
-  useEffect(() => {
-    console.log("State updated! replyingTo is now:", replyingTo);
-  }, [replyingTo]);
+
   return (
     <div className="CommentSectionMain">
       <div className="divabovecommentsections">
@@ -158,21 +178,23 @@ const CommentSection = ({ postId }) => {
             </div>
             {/* <hr className="hrundercommentsection" /> */}
             {/* Formularul de răspuns apare doar sub comentariul corespunzător */}
-            {replyingTo === comment.id && (
+            {replyVisible === comment.id && (
               <div className="reply-form">
                 <FormComment
-                  handleSubmit={(e) => handleReplySubmit(e, comment.id)}
-                  newComment={newReply}
-                  setNewComment={setNewReply}
-                  onCancel={() => setReplyingTo(null)}
+                  onCancel={handleCancelReply}
                   isReply={true}
-                  commentId={comment.id}
+                  onInputChange={handleReplyInputChange}
+                  newComment={newComment}
+                  setNewComment={setNewComment}
+                  onSubmit={(e) => handleReplySubmit(e, comment.id)} // Trimite cu ID-ul comentariului
+                  postId={postId} // Transmite ID-ul postării
+                  commentId
                 />
               </div>
             )}
             {/* Afișează reply-urile */}
             {comment.replies.map((reply, index) => (
-              <div key={reply.id} className="replycommentdiv">
+              <div className="replycommentdiv">
                 <div className="replyarrowupdiv">
                   <i className="fa-solid fa-caret-up upreply"></i>
                 </div>
@@ -185,18 +207,18 @@ const CommentSection = ({ postId }) => {
                         src="https://icon-library.com/images/icon-man-png/icon-man-png-2.jpg"
                       />
                       <div>
-                        <p className="replyCommentName">{reply.name}</p>
-                        <p className="replyCommentPostDate">{reply.date}</p>
+                        <p className="replyCommentName">reply name</p>
+                        <p className="replyCommentPostDate">reply date</p>
                       </div>
                     </div>
                     <div className="replydivCommentNumber">
-                      <p className="replycommentNumber">#{index + 1}</p>
+                      <p className="replycommentNumber">#3</p>
                     </div>
                   </div>
                   <div className="replycommentdowndata">
                     <div className="replyWhatUserCommented">
                       <p className="replyWhatUserCommented-comment">
-                        {reply.comment}
+                        reply comment
                       </p>
                     </div>
                   </div>
@@ -219,11 +241,13 @@ const CommentSection = ({ postId }) => {
         {/* Formularul principal este ascuns când se deschide un reply */}
         {mainFormVisible && (
           <FormComment
-            handleSubmit={handleCommentSubmit}
+            onCancel={handleCancelReply}
+            onInputChange={handleInputChange}
             newComment={newComment}
             setNewComment={setNewComment}
-            onCancel={() => setReplyingTo(null)}
-            postId={postId}
+            handleSubmit={handleCommentSubmit} // Funcția de submit a comentariului
+            postId={postId} // Transmite ID-ul postării
+            commentId
           />
         )}
       </div>

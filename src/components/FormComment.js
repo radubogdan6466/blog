@@ -1,50 +1,70 @@
+//FormComment.js
 import React from "react";
 import "./FormComment.css";
+const FormComment = ({
+  handleSubmit,
+  newComment,
+  setNewComment,
+  onCancel,
+  isReply,
+  commentId,
+}) => {
+  // Funcție pentru a actualiza valorile din formular
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    // Actualizează starea 'newComment' cu datele din formular
+    setNewComment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-const FormComment = ({ onCancel, isReply }) => {
   return (
-    <div className="main-form-comment">
-      <p className="form-info">
-        Câmpurile marcate cu * sunt obligatorii! Adresa de email nu va fi
-        publicata.
-      </p>
+    <div className={`main-form-comment ${isReply ? "reply-form" : ""}`}>
+      {!isReply && (
+        <p className="form-info">
+          Câmpurile marcate cu * sunt obligatorii! Adresa de email nu va fi
+          publicata.
+        </p>
+      )}
       {isReply && (
         <button className="cancel-reply-btn" onClick={onCancel}>
-          Anulează
+          Anulează răspunsul
         </button>
       )}
-      <form className="comment-form">
+
+      <form
+        className="comment-form"
+        onSubmit={(e) => handleSubmit(e, commentId)}
+      >
         <div className="form-group">
-          <label className="form-label" htmlFor="name">
-            Nume *
-          </label>
           <input
+            placeholder="Nume*"
             className="form-input"
             type="text"
             id="name"
             name="name"
+            value={newComment.name} // Folosește newComment.name
+            onChange={handleInputChange}
             required
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="email">
-            Adresa email *
-          </label>
           <input
+            placeholder="Adresa email *"
             className="form-input"
             type="email"
             id="email"
             name="email"
-            required
+            // value={newComment.email}
+            // onChange={onInputChange}
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="website">
-            Website
-          </label>
           <input
+            placeholder="Website"
             className="form-input"
             type="url"
             id="website"
@@ -53,19 +73,19 @@ const FormComment = ({ onCancel, isReply }) => {
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="comment">
-            Comentariu *
-          </label>
           <textarea
+            placeholder={isReply ? "Scrie un răspuns..." : "Comentariu *"}
             className="form-textarea"
             id="comment"
             name="comment"
+            value={newComment.comment}
+            onChange={handleInputChange}
             required
           ></textarea>
         </div>
 
         <button className="form-button" type="submit">
-          Trimite comentariu
+          {isReply ? "Trimite răspuns" : "Trimite comentariu"}
         </button>
       </form>
     </div>

@@ -4,12 +4,14 @@ import {
   collection,
   addDoc,
   getDocs,
+  getDoc,
   updateDoc,
   deleteDoc,
   doc,
   increment,
   orderBy,
   query,
+  arrayUnion,
 } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import {
@@ -24,6 +26,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage"; // Importăm modulul storage
+import "firebase/database"; // or "firebase/firestore"
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -41,6 +44,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const storage = getStorage(app); // Inițializăm serviciul de storage
+const firestore = getFirestore(app); // For firestore
 
 // Funcție pentru a adăuga un post
 
@@ -99,6 +103,9 @@ const addPost = async (title, content, image) => {
       title,
       slug,
       content,
+      likes: 0,
+      category: "",
+      comments: [],
       imageUrl, // Salvăm URL-ul imaginii (sau null)
       createdAt: new Date(),
       views: 0, // Inițializăm vizualizările
@@ -181,6 +188,104 @@ const getPosts = async () => {
   return postsList;
 };
 
+//This is working perfectly
+// const addComment = async (postId, comment) => {
+//   console.log("Comentariul:", comment); // Verifică dacă structura este corectă
+//   try {
+//     const postRef = doc(db, "posts", postId);
+//     // Adaugă comentariul în array-ul 'comments' din Firebase
+//     await updateDoc(postRef, {
+//       comments: arrayUnion({
+//         id: uuidv4(), // Generează un ID unic
+//         text: comment.comment, // Folosește 'comment.comment' pentru text
+//         author: comment.name, // Folosește 'comment.name' pentru author
+//         createdAt: new Date(), // Folosește un timestamp pentru createdAt
+//       }),
+//     });
+//   } catch (e) {
+//     console.error("Eroare la adăugarea comentariului:", e);
+//   }
+// };
+const addComment = async (postId, comment) => {
+  console.log("Comentariul:", comment);
+  try {
+    const postRef = doc(db, "posts", postId);
+    await updateDoc(postRef, {
+      comments: arrayUnion(comment), // Nu mai generezi alt ID aici!
+    });
+  } catch (e) {
+    console.error("Eroare la adăugarea comentariului:", e);
+  }
+};
+const getComments = async (postId) => {
+  try {
+    const postRef = doc(db, "posts", postId); // Ref la postarea cu postId
+    const postSnap = await getDoc(postRef); // Obține documentul
+
+    if (postSnap.exists()) {
+      return postSnap.data().comments; // Returnează comentariile din postare
+    } else {
+      console.log("Postarea nu există!");
+      return [];
+    }
+  } catch (e) {
+    console.error("Eroare la obținerea comentariilor:", e);
+    return [];
+  }
+};
+
+// const getComments = async (postId) => {
+//   try {
+//     const commentsRef = firebase.database().ref(`posts/${postId}/comments`); // Adjust path as needed
+//     const snapshot = await commentsRef.once("value");
+//     const commentsData = snapshot.val();
+
+//     if (commentsData) {
+//       // Transform the object into an array with IDs
+//       const commentsArray = Object.entries(commentsData).map(
+//         ([id, comment]) => ({
+//           id: id, // The Firebase key becomes the comment's ID
+//           ...comment, // Spread the rest of the comment data
+//         })
+//       );
+//       return commentsArray;
+//     } else {
+//       return []; // Return empty array if no comments
+//     }
+//   } catch (error) {
+//     console.error("Error fetching comments:", error);
+//     return []; // Return empty array in case of error
+//   }
+// };
+
+//reply function begin
+const addReply = async (postId, commentId, reply) => {
+  try {
+    const postRef = doc(db, "posts", postId);
+    const postSnap = await getDoc(postRef);
+
+    if (!postSnap.exists()) {
+      console.log("Postarea nu există!");
+      return;
+    }
+
+    const postData = postSnap.data();
+    const updatedComments = postData.comments.map((comment) =>
+      comment.id === commentId
+        ? { ...comment, replies: [...comment.replies, reply] }
+        : comment
+    );
+
+    await updateDoc(postRef, {
+      comments: updatedComments,
+    });
+  } catch (e) {
+    console.error("Eroare la adăugarea răspunsului:", e);
+  }
+};
+
+//reply function end
+
 export {
   app,
   db,
@@ -195,4 +300,7 @@ export {
   storage,
   increment,
   incrementView,
+  addComment,
+  getComments,
+  addReply,
 }; // Exportă și getPosts
