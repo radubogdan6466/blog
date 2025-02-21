@@ -13,6 +13,7 @@ function App() {
         <Route path="/page/:pageNumber" element={<Home />} />
         <Route path="/:slug" element={<Post />} />
         <Route path="/admin" element={<Admin />} />
+        {/* <Route path="/admin/:slug" element={<Admin />} /> */}
       </Routes>
     </div>
   );

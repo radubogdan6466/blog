@@ -1,12 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  deleteComment,
-  getCommentsBySlug,
-  getRepliesBySlug,
-  deleteReply,
-} from "../firebase";
 import ReactQuill, { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import {
@@ -21,7 +15,8 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import "./Admin.css";
 import ImageResize from "quill-image-resize-module-react";
-import CommentSection from "../pages/AdminComments";
+
+Quill.register("modules/imageResize", ImageResize);
 
 const modules = {
   toolbar: [
@@ -56,7 +51,7 @@ const formats = [
   "image",
 ];
 
-const Admin = ({ postId }) => {
+function Admin() {
   const { slug } = useParams();
   const [user, setUser] = useState(null);
   const [category, setCategory] = useState("");
@@ -65,26 +60,11 @@ const Admin = ({ postId }) => {
   const [posts, setPosts] = useState([]);
   const [editId, setEditId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
+  // Vom folosi această stare pentru a reține link-ul imaginii
+  const [imageUrl, setImageUrl] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
-  const [link, setLink] = useState(""); // Stare pentru a ține valoarea link-ului
-
   const quillRef = useRef(null);
   console.log("Admin page for:", slug);
-  const [showComments, setShowComments] = useState(false); // Starea pentru comentarii
-
-  useEffect(() => {}, [postId]);
-  console.log("PostId încărcat:", postId);
-
-  const fetchCommentsForPost = async (postId) => {
-    const commentsData = await getCommentsBySlug(postId); // Modifică să ia comentariile per postare
-    return commentsData;
-  };
-
-  useEffect(() => {
-    if (postId) {
-      fetchCommentsForPost();
-    }
-  }, [slug]);
 
   useEffect(() => {
     const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
@@ -109,18 +89,19 @@ const Admin = ({ postId }) => {
 
     setPosts(data);
   };
-  console.log("Link înainte de addPost:", link); // Verificare crucială!
 
   const handleAddPost = async (e) => {
     e.preventDefault();
 
-    await addPost(title, editorHtml, link); // Trimit doar parametrii necesari
+    const timestamp = new Date().toISOString(); // Timestamp pentru postare
+
+    await addPost(title, editorHtml, category, timestamp); // Adăugăm categoria
 
     setTitle("");
     setEditorHtml("");
     setCategory(""); // Resetăm categoria
+
     fetchPosts();
-    setLink(""); // Resetăm starea `link`
   };
 
   const handleDeletePost = async (id) => {
@@ -131,18 +112,15 @@ const Admin = ({ postId }) => {
   const handleUpdatePost = async (e) => {
     e.preventDefault();
     // Folosim direct link-ul introdus, fără a încărca fișierul
-    await updatePost(editId, editTitle, editorHtml);
+    await updatePost(editId, editTitle, editorHtml, imageUrl);
     setEditId(null);
     setEditTitle("");
     setEditorHtml("");
-
+    setImageUrl("");
     setIsEditMode(false); // Ieși din modul de editare
     fetchPosts();
   };
-  // Funcția pentru a comuta vizibilitatea comentariilor
-  const toggleComments = () => {
-    setShowComments(!showComments);
-  };
+
   return (
     <div className="admin-container">
       {!user ? (
@@ -165,14 +143,21 @@ const Admin = ({ postId }) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+
               <input
                 type="text"
-                id="postLink" // ID-ul este încă necesar pentru a putea fi găsit de etichetă (label)
-                placeholder="Link (opțional)"
-                name="postLink"
-                value={link} // Legăm input-ul de starea `link`
-                onChange={(e) => setLink(e.target.value)} // Actualizăm starea la schimbarea input-ului
+                placeholder="Linkul imaginii"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
               />
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  style={{ maxWidth: "200px" }}
+                />
+              )}
+
               <ReactQuill
                 ref={quillRef}
                 className="admin-editor"
@@ -190,7 +175,6 @@ const Admin = ({ postId }) => {
             {posts &&
               posts.map((post) => (
                 <li key={post.id} className="admin-post">
-                  {/* Link către detalii postare */}
                   {editId === post.id ? (
                     <form
                       className="admin-edit-form"
@@ -201,7 +185,19 @@ const Admin = ({ postId }) => {
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
                       />
-
+                      <input
+                        type="text"
+                        placeholder="Linkul imaginii"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                      />
+                      {imageUrl && (
+                        <img
+                          src={imageUrl}
+                          alt="Preview"
+                          style={{ maxWidth: "200px" }}
+                        />
+                      )}
                       <ReactQuill
                         ref={quillRef}
                         className="admin-editor"
@@ -218,6 +214,13 @@ const Admin = ({ postId }) => {
                         {post.title} (ID: {post.id})
                       </h3>
                       <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                      {post.imageUrl && (
+                        <img
+                          src={post.imageUrl}
+                          alt={post.title}
+                          style={{ maxWidth: "200px" }}
+                        />
+                      )}
                       <div className="admin-post-actions">
                         <button
                           className="admin-post-delete-button"
@@ -231,20 +234,13 @@ const Admin = ({ postId }) => {
                             setEditId(post.id);
                             setEditTitle(post.title);
                             setEditorHtml(post.content);
+                            setImageUrl(post.imageUrl);
                             setIsEditMode(true); // Setează edit mode activ
                           }}
                         >
                           Modifică
                         </button>
-                        <button onClick={toggleComments}>
-                          {showComments
-                            ? "Ascunde comentarii"
-                            : "Afișează comentarii"}
-                        </button>
-                        {/* Afiseaza comentariile pentru fiecare postare */}
-                        {/* Dacă showComments este adevărat, afișăm CommentSection */}
                       </div>
-                      {showComments && <CommentSection postId={post.id} />}{" "}
                     </>
                   )}
                 </li>
@@ -254,6 +250,6 @@ const Admin = ({ postId }) => {
       )}
     </div>
   );
-};
+}
 
 export default Admin;

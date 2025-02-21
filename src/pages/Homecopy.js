@@ -96,7 +96,10 @@ function Home() {
               <div className="post-imageHomejs">
                 <img
                   className="postHomeImg"
-                  src="https://zoso.ro/img/2025/02/artificial-intelligence-2-720x300.jpg"
+                  src={
+                    post.link ||
+                    "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+                  }
                   alt={post.title}
                   onClick={() => handleReadMore(generateSlug(post.title))}
                 />

@@ -21,7 +21,12 @@ import {
   GoogleAuthProvider,
   signOut,
 } from "firebase/auth";
-import { getStorage } from "firebase/storage"; // Importăm modulul storage
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage"; // Importăm modulul storage
 import "firebase/database"; // or "firebase/firestore"
 
 const firebaseConfig = {
@@ -40,6 +45,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const storage = getStorage(app); // Inițializăm serviciul de storage
+const firestore = getFirestore(app); // For firestore
 
 // Funcție pentru a adăuga un post
 
@@ -63,21 +69,47 @@ const generateSlug = (title) => {
     .replace(/\s+/g, "-")
     .replace(/[^\w-]+/g, "");
 };
-
-const addPost = async (title, content, link) => {
+const addPost = async (title, content, image) => {
   try {
     const slug = generateSlug(title);
+    let imageUrl = null; // Inițializăm URL-ul imaginii la null
 
+    if (image) {
+      // Verificăm dacă a fost selectată o imagine
+      const storageRef = ref(storage, `images/${image.name}`); // Referință la fișier în storage
+      const uploadTask = uploadBytesResumable(storageRef, image); // Upload cu progres
+
+      await new Promise((resolve, reject) => {
+        // Promisiune pentru a aștepta finalizarea upload-ului
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Opțional: Afișează progresul upload-ului
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+          },
+          (error) => {
+            console.error("Eroare la upload:", error);
+            reject(error);
+          },
+          async () => {
+            imageUrl = await getDownloadURL(uploadTask.snapshot.ref); // Obținem URL-ul după finalizare
+            resolve();
+          }
+        );
+      });
+    }
     await addDoc(collection(db, "posts"), {
       title,
       slug,
       content,
-      link: link, // Aici adaugi link-ul în câmpul 'link'
       likes: 0,
       category: "",
       comments: [],
+      imageUrl, // Salvăm URL-ul imaginii (sau null)
       createdAt: new Date(),
-      views: 0,
+      views: 0, // Inițializăm vizualizările
     });
   } catch (e) {
     console.error("Eroare la adăugarea documentului:", e);
@@ -103,11 +135,40 @@ const deletePost = async (id) => {
 };
 
 // Funcție pentru actualizare postare
-const updatePost = async (id, newTitle, newContent) => {
+const updatePost = async (id, newTitle, newContent, image) => {
+  // Parametru nou: image
   try {
+    let imageUrl = null;
+
+    if (image) {
+      // Verificăm dacă a fost selectată o imagine
+      const storageRef = ref(storage, `images/${image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+
+      await new Promise((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+          },
+          (error) => {
+            console.error("Eroare la upload:", error);
+            reject(error);
+          },
+          async () => {
+            imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve();
+          }
+        );
+      });
+    }
+
     await updateDoc(doc(db, "posts", id), {
       title: newTitle,
       content: newContent,
+      imageUrl, // Actualizăm URL-ul imaginii (sau null)
       updatedAt: new Date(),
     });
   } catch (e) {
@@ -223,30 +284,6 @@ const addReply = async (postId, commentId, reply) => {
     console.error("Eroare la adăugarea răspunsului:", e);
   }
 };
-//reply function end
-
-export const getCommentsBySlug = async (slug) => {
-  const postsRef = collection(db, "posts");
-  const q = query(postsRef, where("slug", "==", slug));
-  const querySnapshot = await getDocs(q);
-
-  if (!querySnapshot.empty) {
-    return querySnapshot.docs[0].data().comments || [];
-  } else {
-    return [];
-  }
-};
-export const getRepliesBySlug = async (slug) => {
-  const postsRef = collection(db, "posts");
-  const q = query(postsRef, where("slug", "==", slug));
-  const querySnapshot = await getDocs(q);
-
-  if (!querySnapshot.empty) {
-    return querySnapshot.docs[0].data().replies || [];
-  } else {
-    return [];
-  }
-};
 export const deleteComment = async (postId, commentId) => {
   try {
     const postRef = doc(db, "posts", postId);
@@ -264,7 +301,6 @@ export const deleteComment = async (postId, commentId) => {
     console.error("Eroare la ștergerea comentariului:", error);
   }
 };
-
 export const deleteReply = async (postId, commentId, replyId) => {
   try {
     const postRef = doc(db, "posts", postId);

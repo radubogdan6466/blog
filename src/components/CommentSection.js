@@ -3,7 +3,6 @@ import "./CommentSection.css";
 import FormComment from "../components/FormComment";
 import { addComment, getComments, addReply } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
-
 const CommentSection = ({ postId }) => {
   const [replyVisible, setReplyVisible] = useState(null);
   const [mainFormVisible, setMainFormVisible] = useState(true);
@@ -61,14 +60,7 @@ const CommentSection = ({ postId }) => {
       [name]: value,
     }));
   };
-  const handleReplyClick = (commentId) => {
-    setReplyingTo(commentId); // Setează comentariul la care se răspunde
-    setMainFormVisible(false); // Ascunde formularul principal
-  };
-  const handleCancelReply = () => {
-    setReplyVisible(null);
-    setMainFormVisible(true);
-  };
+
   const handleReplySubmit = async (e, commentId) => {
     e.preventDefault();
 
@@ -104,6 +96,7 @@ const CommentSection = ({ postId }) => {
   useEffect(() => {
     console.log("State updated! replyingTo is now:", replyingTo);
   }, [replyingTo]);
+
   return (
     <div className="CommentSectionMain">
       <div className="divabovecommentsections">
@@ -140,7 +133,15 @@ const CommentSection = ({ postId }) => {
               <div className="ReplyDiv">
                 <button
                   className="replycommentbtn"
-                  onClick={() => handleReplyClick(comment.id)}
+                  onClick={() => {
+                    console.log(
+                      "replyingTo:",
+                      replyingTo,
+                      "comment.id:",
+                      comment.id
+                    );
+                    setReplyingTo(comment.id);
+                  }}
                 >
                   <i className="fa-solid fa-reply replycon"></i>reply
                 </button>
