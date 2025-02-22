@@ -1,13 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  deleteComment,
-  getCommentsBySlug,
-  getRepliesBySlug,
-  deleteReply,
-} from "../firebase";
-import ReactQuill, { Quill } from "react-quill-new";
+import { getCommentsBySlug } from "../firebase";
+import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import {
   login,
@@ -20,7 +15,6 @@ import {
 } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "./Admin.css";
-import ImageResize from "quill-image-resize-module-react";
 import CommentSection from "../pages/AdminComments";
 
 const modules = {
@@ -114,7 +108,7 @@ const Admin = ({ postId }) => {
   const handleAddPost = async (e) => {
     e.preventDefault();
 
-    await addPost(title, editorHtml, link); // Trimit doar parametrii necesari
+    await addPost(title, editorHtml, link, category); // Trimit doar parametrii necesari
 
     setTitle("");
     setEditorHtml("");
@@ -173,6 +167,17 @@ const Admin = ({ postId }) => {
                 value={link} // Legăm input-ul de starea `link`
                 onChange={(e) => setLink(e.target.value)} // Actualizăm starea la schimbarea input-ului
               />
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="">Selectează o categorie</option>
+                <option value="AI">AI</option>
+                <option value="fun">fun</option>
+                <option value="news">news</option>
+                <option value="other">other</option>
+              </select>
               <ReactQuill
                 ref={quillRef}
                 className="admin-editor"

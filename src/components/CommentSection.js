@@ -4,8 +4,7 @@ import FormComment from "../components/FormComment";
 import { addComment, getComments, addReply } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 const CommentSection = ({ postId }) => {
-  const [replyVisible, setReplyVisible] = useState(null);
-  const [mainFormVisible, setMainFormVisible] = useState(true);
+  const [mainFormVisible] = useState(true);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     name: "",
@@ -51,15 +50,6 @@ const CommentSection = ({ postId }) => {
 
     fetchComments(); // Apelează funcția
   }, [postId]); // Depinde de postId pentru a se reîncărca când se schimbă
-
-  // Funcție pentru actualizarea valorilor din formular
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewComment((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const handleReplySubmit = async (e, commentId) => {
     e.preventDefault();

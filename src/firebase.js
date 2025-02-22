@@ -64,7 +64,7 @@ const generateSlug = (title) => {
     .replace(/[^\w-]+/g, "");
 };
 
-const addPost = async (title, content, link) => {
+const addPost = async (title, content, link, category) => {
   try {
     const slug = generateSlug(title);
 
@@ -74,7 +74,7 @@ const addPost = async (title, content, link) => {
       content,
       link: link, // Aici adaugi link-ul în câmpul 'link'
       likes: 0,
-      category: "",
+      category,
       comments: [],
       createdAt: new Date(),
       views: 0,
@@ -128,24 +128,6 @@ const getPosts = async () => {
   return postsList;
 };
 
-//This is working perfectly
-// const addComment = async (postId, comment) => {
-//   console.log("Comentariul:", comment); // Verifică dacă structura este corectă
-//   try {
-//     const postRef = doc(db, "posts", postId);
-//     // Adaugă comentariul în array-ul 'comments' din Firebase
-//     await updateDoc(postRef, {
-//       comments: arrayUnion({
-//         id: uuidv4(), // Generează un ID unic
-//         text: comment.comment, // Folosește 'comment.comment' pentru text
-//         author: comment.name, // Folosește 'comment.name' pentru author
-//         createdAt: new Date(), // Folosește un timestamp pentru createdAt
-//       }),
-//     });
-//   } catch (e) {
-//     console.error("Eroare la adăugarea comentariului:", e);
-//   }
-// };
 const addComment = async (postId, comment) => {
   console.log("Comentariul:", comment);
   try {

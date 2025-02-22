@@ -1,0 +1,55 @@
+.banner {
+    height: 190px;
+    overflow: hidden;
+    padding-top: 70px;
+}
+
+.Banner-Content {
+    color: #aaa;
+    font-size: 1.2rem;
+    font-weight: 600;
+    top: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.site-branding .site-title {
+    font-size: 1px;
+}
+
+.Banner-Subtitle {
+    text-align: center;
+    padding-left: 5%;
+    padding-right: 5%;
+
+}
+
+.Banner-Title:hover {
+    opacity: 0.8;
+    cursor: pointer;
+
+}
+
+.site-branding .site-title a img {
+    display: block;
+}
+
+.headinfo .headled {
+    float: right;
+    margin-top: 10px;
+}
+
+@media (min-width: 1050px) {
+    .banner {
+        flex-direction: row;
+        width: 686px;
+        max-width: calc(100% - 240px);
+        margin: 0 auto;
+        padding: 0;
+        height: 190px;
+        overflow: hidden;
+        padding-top: 70px;
+    }
+
+}

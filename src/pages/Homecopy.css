@@ -60,6 +60,11 @@
   max-width: 90%;
 }
 
+.category {
+  color: blueviolet;
+  font-size: 10px;
+}
+
 .blog-post .hrpostjs {
   width: 90%;
   margin: 20px auto;
@@ -82,15 +87,18 @@
 }
 
 .post-imageHomejs .postHomeImg {
-  /* min-width: 240px; */
-  /* Lățimea minimă a imaginii */
-  height: auto;
-  /* Înălțimea se ajustează automat la imagine */
+  max-width: 100%;
+  /* Imaginea va acoperi întreaga lățime a div-ului */
+  max-height: 300px;
+  /* Înălțimea maximă */
   width: 100%;
-  /* Lățimea maximă este 100% din container */
+  /* Lățimea imaginii se ajustează automat */
+  height: auto;
+  /* Înălțimea se ajustează în funcție de lățime */
   display: block;
-  /* Elimină spațiul implicit sub imagine */
   border-radius: 2px;
+  object-fit: cover;
+  /* Imaginea acoperă întregul div fără a distorsiona */
 }
 
 .post-imageHomejs img:hover {

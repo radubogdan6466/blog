@@ -16,6 +16,7 @@ body {
 }
 
 :root {
+  --background-color-nav: #999;
   --background-color: #0c0c0c;
   --second-background-color: #481e14;
   --third-background-color: #53271c;

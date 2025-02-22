@@ -1,0 +1,162 @@
+/* NAVBAR */
+.Navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--background-color-nav);
+    color: antiquewhite;
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+/* STRUCTURA NAVBAR */
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+}
+
+/* MENIU ÎN STÂNGA */
+.menu-section {
+    flex-shrink: 0;
+}
+
+.menu-toggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.right-side {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.hamburger-menu {
+    position: absolute;
+    top: 100%;
+    width: 686px;
+    max-width: calc(100% - 240px);
+    /* Lățimea meniului */
+    background-color: var(--background-color-nav);
+    z-index: 999;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    height: 0;
+    /* Inițial, setăm height-ul la 0 */
+    opacity: 0;
+    /* Inițial, setăm opacity la 0 */
+    overflow: hidden;
+    /* Ascundem meniul atunci când este închis */
+    transition: height 0.3s ease, opacity 0.3s ease;
+    /* Tranziție pentru height și opacity */
+}
+
+/* Când meniul este deschis, se schimbă height și opacity */
+.hamburger-menu.open {
+
+    height: 220px;
+        width: 686px;
+        max-width: calc(100% - 240px);
+        /* Înălțimea maximă a meniului, ajustează în funcție de câte elemente are meniul */
+        opacity: 1;
+}
+
+
+.hamburger-menu ul {
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.hamburger-menu li {
+    padding: 4px;
+    font-size: 1.2rem;
+}
+
+/* SEARCH + SOCIAL ÎN DREAPTA */
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+    /* Împinge secțiunea spre dreapta */
+}
+
+/* INPUT DE CĂUTARE */
+.search-container {
+    position: relative;
+}
+
+.search-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Input-ul va fi ascuns inițial */
+.search {
+    position: absolute;
+    top: 40px;
+    /* Plasează-l sub icon-ul de căutare */
+    right: 0;
+    width: 200px;
+    /* Lățimea input-ului */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    opacity: 0;
+    /* Inițial, input-ul este transparent */
+    visibility: hidden;
+    /* Input-ul este ascuns */
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease;
+    /* Tranziție pentru opacitate, vizibilitate și poziție */
+}
+
+/* Când input-ul devine vizibil, schimbăm opacitatea și poziția */
+.search.open {
+    opacity: 1;
+    visibility: visible;
+    top: 50px;
+    /* Poziționăm input-ul sub icon-ul de căutare */
+}
+
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* MEDIA QUERIES PENTRU MOBIL */
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* .hamburger-menu ul {
+            text-align: center;
+            padding: 10px;
+        } */
+
+    .right-section {
+        margin-left: auto;
+    }
+
+    .search-container {
+        width: auto;
+        justify-content: flex-start;
+    }
+
+    .social-icons {
+        justify-content: flex-start;
+    }
+}
